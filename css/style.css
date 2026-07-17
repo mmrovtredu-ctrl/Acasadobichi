@@ -444,3 +444,124 @@ p { margin: 0 0 1em; }
 @media (min-width: 1200px) {
   .cards--units { grid-template-columns: repeat(4, 1fr); }
 }
+
+/* =========================================================
+   ESTILO VITRINE (referência Petz) + LETRAS FLUTUANTES
+   ========================================================= */
+
+/* Visual mais clean e arredondado */
+:root { --radius: 22px; }
+.card, .review { border-radius: var(--radius); }
+
+/* ---------- Letras flutuantes no título ---------- */
+/* O JS quebra .float-text em <span class="ltr"> por letra */
+.ltr {
+  display: inline-block;
+  animation: ltr-float 3.2s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 70ms);
+  will-change: transform;
+}
+@keyframes ltr-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+/* ---------- Patinhas e ossinhos flutuando no hero ---------- */
+.hero__floaties { position: absolute; inset: 0; pointer-events: none; }
+.floaty {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  opacity: 0.28;
+  background-repeat: no-repeat;
+  background-size: contain;
+  animation: floaty-drift 7s ease-in-out infinite;
+}
+.floaty--paw {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%237B8B3D'%3E%3Cellipse cx='7' cy='7.5' rx='2' ry='2.6'/%3E%3Cellipse cx='17' cy='7.5' rx='2' ry='2.6'/%3E%3Cellipse cx='3.6' cy='12' rx='1.8' ry='2.3'/%3E%3Cellipse cx='20.4' cy='12' rx='1.8' ry='2.3'/%3E%3Cpath d='M12 11c3.2 0 6 2.6 6 5.4 0 2-1.5 3.1-3.2 2.6-1.2-.3-1.9-.5-2.8-.5s-1.6.2-2.8.5C7.5 19.5 6 18.4 6 16.4 6 13.6 8.8 11 12 11Z'/%3E%3C/svg%3E");
+}
+.floaty--bone {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238A2334'%3E%3Cpath d='M7.5 9.2a2.6 2.6 0 1 1 2.3-3.9 2.6 2.6 0 1 1 4.4 0 2.6 2.6 0 1 1 2.3 3.9L14 12l2.5 2.8a2.6 2.6 0 1 1-2.3 3.9 2.6 2.6 0 1 1-4.4 0 2.6 2.6 0 1 1-2.3-3.9L10 12 7.5 9.2Z' transform='rotate(40 12 12)'/%3E%3C/svg%3E");
+}
+.f1 { top: 12%; left: 6%; animation-delay: 0s; }
+.f2 { top: 20%; right: 10%; width: 36px; animation-delay: 1.2s; }
+.f3 { bottom: 30%; left: 12%; width: 30px; animation-delay: 2.1s; }
+.f4 { bottom: 14%; right: 28%; animation-delay: 0.6s; }
+.f5 { top: 48%; right: 4%; width: 52px; animation-delay: 1.7s; }
+@keyframes floaty-drift {
+  0%, 100% { transform: translate(0, 0) rotate(-6deg); }
+  50% { transform: translate(8px, -16px) rotate(8deg); }
+}
+
+/* ---------- Chips de categorias (bolinhas da vitrine) ---------- */
+.section--chips { padding: 1.5rem 0 0.5rem; }
+.chips {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding: 0.5rem 0.25rem 1rem;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.chips::-webkit-scrollbar { display: none; }
+.chip {
+  flex: 0 0 auto;
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+  width: 92px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-align: center;
+  color: var(--texto);
+  text-decoration: none;
+}
+.chip__circle {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--branco);
+  border: 2px solid var(--borda);
+  color: var(--vinho);
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+.chip__circle svg { width: 30px; height: 30px; }
+.chip:hover .chip__circle {
+  transform: translateY(-4px);
+  border-color: var(--oliva);
+  box-shadow: var(--shadow);
+}
+.chip:focus-visible { outline: 3px solid var(--oliva); outline-offset: 3px; border-radius: 12px; }
+
+/* ---------- Barra de vantagens ---------- */
+.section--perks { padding: 1rem 0 0; }
+.perks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+.perk {
+  background: var(--branco);
+  border: 1px solid var(--borda);
+  border-radius: var(--radius);
+  padding: 1rem;
+  display: grid;
+  gap: 0.15rem;
+}
+.perk strong { font-family: var(--font-display); color: var(--vinho); font-size: 0.98rem; }
+.perk span { color: var(--texto-suave); font-size: 0.88rem; }
+
+@media (min-width: 960px) {
+  .perks { grid-template-columns: repeat(4, 1fr); }
+  .chips { justify-content: center; gap: 1.75rem; }
+  .chip { width: 104px; }
+  .chip__circle { width: 80px; height: 80px; }
+}
+
+/* Movimento reduzido: letras e patinhas ficam paradas */
+@media (prefers-reduced-motion: reduce) {
+  .ltr, .floaty { animation: none !important; }
+}
