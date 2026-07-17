@@ -166,6 +166,31 @@ document.documentElement.classList.add("js");
   });
 })();
 
+/* ---------- Letras flutuantes no título do hero ---------- */
+(function initFloatingLetters() {
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduced) return;
+
+  let index = 0;
+  $$(".float-text").forEach((chunk) => {
+    const text = chunk.textContent;
+    chunk.setAttribute("aria-label", text); // leitores de tela leem o texto inteiro
+    chunk.textContent = "";
+    [...text].forEach((char) => {
+      if (char === " ") {
+        chunk.appendChild(document.createTextNode(" "));
+        return;
+      }
+      const span = document.createElement("span");
+      span.className = "ltr";
+      span.setAttribute("aria-hidden", "true");
+      span.style.setProperty("--i", index++);
+      span.textContent = char;
+      chunk.appendChild(span);
+    });
+  });
+})();
+
 /* ---------- Reveal on scroll (leve, respeita reduced-motion) ---------- */
 (function initReveal() {
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
