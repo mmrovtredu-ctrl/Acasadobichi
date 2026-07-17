@@ -565,3 +565,86 @@ p { margin: 0 0 1em; }
 @media (prefers-reduced-motion: reduce) {
   .ltr, .floaty { animation: none !important; }
 }
+
+/* =========================================================
+   GALERIA DO INSTAGRAM + PETS CAMINHANTES
+   ========================================================= */
+
+/* ---------- Galeria ---------- */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9rem;
+  margin-top: 1.75rem;
+}
+.gallery__item {
+  display: block;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--borda);
+  background: var(--branco);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.gallery__item img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+.gallery__item:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.gallery__item:focus-visible { outline: 3px solid var(--oliva); outline-offset: 3px; }
+
+@media (min-width: 960px) {
+  .gallery { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+}
+
+/* ---------- Pets que caminham com o scroll ---------- */
+.walker {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 40;               /* abaixo do FAB (60) e do header (50) */
+  display: flex;
+  align-items: flex-end;
+  gap: 0.4rem;
+  transform: translateX(0);
+  margin-left: -180px;        /* começam fora da tela, à esquerda */
+  pointer-events: none;
+  filter: drop-shadow(0 4px 6px rgba(61, 58, 55, 0.18));
+}
+.walker__pet { display: block; }
+
+/* Patas giram a partir do topo, alternadas */
+.walker .leg { transform-box: fill-box; transform-origin: 50% 8%; }
+.walker.is-walking .leg-a { animation: leg-swing 320ms ease-in-out infinite; }
+.walker.is-walking .leg-b { animation: leg-swing 320ms ease-in-out infinite reverse; }
+@keyframes leg-swing {
+  0%, 100% { transform: rotate(24deg); }
+  50% { transform: rotate(-24deg); }
+}
+
+/* Corpo balança de leve + rabos abanam enquanto anda */
+.walker .pet-body { transform-box: fill-box; transform-origin: 50% 100%; }
+.walker.is-walking .pet-body { animation: body-bob 320ms ease-in-out infinite; }
+@keyframes body-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2.5px); }
+}
+.walker .dog-tail, .walker .cat-tail { transform-box: fill-box; transform-origin: 100% 100%; }
+.walker.is-walking .dog-tail { animation: tail-wag 260ms ease-in-out infinite; }
+.walker.is-walking .cat-tail { animation: tail-wag 420ms ease-in-out infinite; }
+@keyframes tail-wag {
+  0%, 100% { transform: rotate(-10deg); }
+  50% { transform: rotate(14deg); }
+}
+
+/* Telas pequenas: pets menores para não atrapalhar a leitura */
+@media (max-width: 480px) {
+  .walker__dog { width: 72px; height: 48px; }
+  .walker__cat { width: 56px; height: 36px; }
+  .walker { margin-left: -140px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .walker { display: none; }
+}
